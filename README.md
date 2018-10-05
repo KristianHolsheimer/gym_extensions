@@ -29,35 +29,61 @@ In order to update the state-action value function, we use algorithm objects, su
 There are also state-only value functions such as `LinearV`, which can be updated e.g. using the `ValueTD0` algorithm.
 
 
-## A Simple Example:
+## A Simple (Working) Example:
 
 ```python
 import gym
 from gym_extensions.value_functions import LinearQ
-from gym_extensions.policies import PolicyQ
 from gym_extensions.algorithms import Sarsa
-
+from gym_extensions.policies import PolicyQ
 
 env = gym.make('CartPole-v0')
-q = LinearQ(env, interaction_degree=2)
+q = LinearQ(env, polynomial_degree=2)
 p = PolicyQ(q)
-algo = Sarsa(q, alpha=0.01, gamma=0.8)
+algo = Sarsa(q, alpha=0.05, gamma=0.75)
+
+# counter for early stopping
+consecutive_successes = 0
+
 
 for episode in range(1000):
+
     # init
     s = env.reset()
     a = env.action_space.sample()
 
     for t in range(200):
-        # env.render()
+
+        # sample from environment
         s_next, r, done, _ = env.step(a)
+
+        # use the PolicyQ object
         a_next = p.greedy(s_next)
+
+        # if episode finished unsuccessfully, we'll hand in some of our return
+        if done and t < 199:
+            r = -5
+
+        # update Q-function using SARSA algorithm
         algo.update(s, a, r, s_next, a_next)
 
+
         if done:
+            if t == 199:
+                consecutive_successes += 1
+                print(f"episode={episode+1},  t={t+1}, consecutive_successes={consecutive_successes}")
+            else:
+                consecutive_successes = 0
+                print(f"episode={episode+1},  t={t+1}, failed")
             break
 
+        # prepare for next timestep
         s, a = s_next, a_next
+
+    if consecutive_successes == 10:
+        p.to_file('data/CartPole-v0.policy')
+        break
+
 
 env.close()
 ```

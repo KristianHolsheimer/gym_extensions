@@ -1,6 +1,6 @@
 # Extensions to OpenAI gym
 
-This repository is my own personal sandbox for playing with reinforcement learning algorithms. The reason why I started this is that I noticed that every time I wrote a little quick-n-dirty implementation of an RL algorithm, the code was so horrific and my results essentially irreproducible. So I figured that in order to advance and grow my RL knowledge, my code had to be organized.
+This repository is my own personal sandbox for playing with reinforcement learning algorithms. The reason why I started this is that I noticed that every time I wrote a little quick-n-dirty implementation of an RL algorithm, the code was so horrific and my results essentially irreproducible. So I figured that in order to progress, my code had to be more organized.
 
 
 **Disclaimer:** Although the code in here should be reasonably clean and bug-free, it's by no means complete.
@@ -13,9 +13,9 @@ The way I chose to organize the code is that I defined *value functions*, *polic
 
 The central object *Q(s, a)* is defined as an abstract class `BaseQ`, which is refined in a variety of specific implementations, such as
 
-- `TabularQ`
-- `LinearQ` (implemented)
-- `NeuralNetQ`
+- `TabularQ` (not yet implemented)
+- `LinearQ`
+- `NeuralNetQ` (not yet implemented)
 
 The policy (or policies) derived from such Q-functions is implemented as a wrapper class:
 

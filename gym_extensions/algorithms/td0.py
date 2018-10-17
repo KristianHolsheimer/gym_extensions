@@ -29,11 +29,14 @@ class Sarsa(BaseQAlgorithm):
         q_pred = self.q(s, a)
         return q_pred - q_target
 
+    def update(self, s, a, r, s_next, a_next):
+        return super(Sarsa, self).update(s, a, r, s_next, a_next)
+
 
 class QLearning(BaseQAlgorithm):
     def __init__(self, q, alpha=0.01, gamma=0.99):
         self.q = q
-        self.policy = Policy(q)
+        self.policy = PolicyQ(q)
         self.alpha = alpha
         self.gamma = gamma
 

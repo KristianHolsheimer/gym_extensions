@@ -13,7 +13,7 @@ The way I chose to organize the code is that I defined *value functions*, *polic
 
 The central object *Q(s, a)* is defined as an abstract class `BaseQ`, which is refined in a variety of specific implementations, such as
 
-- `TabularQ` (not yet implemented)
+- `TabularQ`
 - `LinearQ`
 - `NeuralNetQ` (not yet implemented)
 

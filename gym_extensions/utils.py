@@ -13,6 +13,14 @@ class ActionDomainError(Exception):
     pass
 
 
+class ObservationTypeError(Exception):
+    pass
+
+
+class ActionTypeError(Exception):
+    pass
+
+
 def check_observation(s, env):
     if not env.observation_space.contains(s):
         raise ObservationDomainError("Observation space {} does not contain observation {}".format(env.observation_space, s))
@@ -26,6 +34,16 @@ def check_action(a, env):
 def check_observation_action_pair(s, a, env):
     check_observation(s, env)
     check_action(a, env)
+
+
+def check_observation_space_type(space_type, env):
+    if not isinstance(env.observation_space, Discrete):
+        raise ActionTypeError("The environment's observation space is not of type: {}".format(space_type))
+
+
+def check_action_space_type(space_type, env):
+    if not isinstance(env.action_space, space_type):
+        raise ObservationTypeError("The environment's action space is not of type: {}".format(space_type))
 
 
 def softmax(arr, axis=0):

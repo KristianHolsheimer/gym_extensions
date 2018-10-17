@@ -70,4 +70,4 @@ class LinearV(LinearQ):
         self.v = np.zeros_like(self.w)
 
     def _update(self, s, delta):
-        return super(self.__class__, self)._update(s, None, delta)
+        return super(LinearV, self)._update(s, None, delta)

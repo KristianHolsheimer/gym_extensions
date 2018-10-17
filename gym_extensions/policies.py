@@ -18,15 +18,13 @@ class PolicyQ(SerializationMixin):
     @seed.setter
     def seed(self, new_seed):
         self._seed = new_seed
-        self.random = np.random.RandomState(new_seed)
+        self._random = np.random.RandomState(new_seed)
 
     def greedy(self, s):
         if isinstance(self.q.env.action_space, Discrete):
-            # here we ensure that ties are broken randomly
-            actions = np.arange(self.q.env.action_space.n)
-            self.random.shuffle(actions)
-            i = np.argmax([self.q(s, a) for a in actions])
-            a = actions[i]
+            # we randomize the actions to ensure that ties are broken randomly
+            actions = self._random.permutation(self.q.env.action_space.n)
+            a = max(actions, key=(lambda a: self.q(s, a)))
             return a
         else:
             raise NotImplementedError("Haven't yet implemented action space: {}".format(self.q.env.action_space))
@@ -48,11 +46,11 @@ class PolicyQ(SerializationMixin):
     def random_thompson(self, s):
         p = self.proba(s)
         n = self.q.env.action_space.n
-        a = self.random.choice(n, p=p)
+        a = self._random.choice(n, p=p)
         return a
 
     def epsilon_greedy(self, s):
-        if self.random.rand() < self.epsilon:
+        if self._random.rand() < self.epsilon:
             return self.random_uniform(s)
         else:
             return self.greedy(s)

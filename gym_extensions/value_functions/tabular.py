@@ -24,4 +24,3 @@ class TabularQ(BaseQ):
 
     def _update(self, s, a, residual):
         self.table[s, a] -= self.alpha * residual
-

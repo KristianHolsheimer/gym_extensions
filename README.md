@@ -67,7 +67,6 @@ for episode in range(1000):
         # update Q-function using SARSA algorithm
         algo.update(s, a, r, s_next, a_next)
 
-
         if done:
             if t == 199:
                 consecutive_successes += 1
@@ -89,3 +88,6 @@ env.close()
 ```
 
 For a more elaborate examples, check out the [notebooks](./notebooks).
+
+
+**Note:** I use flake8 commit hooks, explained [here](http://flake8.pycqa.org/en/latest/user/using-hooks.html).
